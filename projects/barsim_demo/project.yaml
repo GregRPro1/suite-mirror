@@ -1,0 +1,28 @@
+feedback:
+  sinks:
+  - config:
+      path: inbox
+    kind: fileshare
+panels:
+- ProjectExplorer
+- Jobs
+- Logs
+- Settings
+project:
+  id: proj
+  name: proj
+  profile: barsim
+  version: 0.0.1
+ui:
+  layout:
+    preset: wide-right
+  statusbar:
+    pinned_macros: []
+  theme:
+    accent_color: '#ffcc00'
+    base_color: '#0b3d91'
+  window:
+    default_size:
+    - 1400
+    - 900
+    maximized: false

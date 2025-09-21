@@ -1,0 +1,41 @@
+# Python / venv
+.venv/
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+coverage.xml
+htmlcov/
+
+# Local caches / tools
+.vscode/
+.idea/
+*.code-workspace
+
+# Build / dist
+build/
+dist/
+*.egg-info/
+
+# Our local artifacts
+_packs/
+_results/
+_tmp/
+tmp/
+*.log
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Binary blobs (keep out of repo)
+*.zip
+*.7z
+*.rar
+*.png
+*.jpg
+*.jpeg
+*.ico
+*.gif
+*.mp4
+*.mov

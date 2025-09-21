@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project",
+  "type": "object",
+  "required": [
+    "project",
+    "ui"
+  ],
+  "properties": {
+    "generator": {
+      "type": "object"
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "profile"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "properties": {
+        "brand_id": {
+          "type": "string"
+        },
+        "window_defaults": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 960
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 600
+            },
+            "maximized": {
+              "type": "boolean"
+            }
+          }
+        },
+        "theme": {
+          "type": "object",
+          "properties": {
+            "base_color": {
+              "type": "string"
+            },
+            "accent_color": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            }
+          }
+        },
+        "window": {
+          "type": "object",
+          "properties": {
+            "default_size": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "maximized": {
+              "type": "boolean"
+            }
+          }
+        },
+        "layout": {
+          "type": "object",
+          "properties": {
+            "preset": {
+              "type": "string"
+            }
+          }
+        },
+        "statusbar": {
+          "type": "object",
+          "properties": {
+            "pinned_macros": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

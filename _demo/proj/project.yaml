@@ -1,0 +1,20 @@
+name: barsim
+panels:
+  - ProjectExplorer
+  - Jobs
+  - Logs
+  - Settings
+ui:
+  theme:
+    base_color: "#0b3d91"
+    accent_color: "#ffcc00"
+  window:
+    default_size: [1400, 900]
+    maximized: false
+  layout:
+    preset: wide-right
+  panels:
+    - ProjectExplorer
+    - Jobs
+    - Logs
+    - Settings

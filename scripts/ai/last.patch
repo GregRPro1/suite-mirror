@@ -1,0 +1,49 @@
+diff --git a/scripts/git_setup.ps1 b/scripts/git_setup.ps1
+index 1111111..2222222 100644
+--- a/scripts/git_setup.ps1
++++ b/scripts/git_setup.ps1
+@@ -8,9 +8,12 @@ param(
+ )
+ $ErrorActionPreference = "Stop"
+-function Exec($cmd) {
+-  Write-Host "» $cmd" -ForegroundColor Cyan
+-  & $env:ComSpec /c $cmd 2>&1 | ForEach-Object { $_.TrimEnd() } | ForEach-Object { if($_){ Write-Host $_ } }
+-  if ($LASTEXITCODE -ne 0) { throw "Command failed: $cmd" }
+-}
++function Exec($cmd) {
++  Write-Host "» $cmd" -ForegroundColor Cyan
++  # Cast each pipeline object to string BEFORE trimming, to handle ErrorRecord etc.
++  $out = & $env:ComSpec /c $cmd 2>&1 | ForEach-Object { "$_" } | ForEach-Object { $_.TrimEnd() }
++  foreach ($line in $out) {
++    if ($line) { Write-Host $line }
++  }
++  if ($LASTEXITCODE -ne 0) { throw "Command failed: $cmd (exit $LASTEXITCODE)" }
++}
+ 
+ # Detect git
+ if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw "Git not found in PATH. Install Git for Windows first." }
+diff --git a/scripts/ai/apply_and_test.ps1 b/scripts/ai/apply_and_test.ps1
+index 3333333..4444444 100644
+--- a/scripts/ai/apply_and_test.ps1
++++ b/scripts/ai/apply_and_test.ps1
+@@ -5,10 +5,13 @@ param(
+ )
+ $ErrorActionPreference = "Stop"
+ 
+-function Exec($cmd) {
+-  Write-Host "» $cmd" -ForegroundColor Cyan
+-  & $env:ComSpec /c $cmd 2>&1 | ForEach-Object { $_.TrimEnd() } | ForEach-Object { if($_){ Write-Host $_ } }
+-  if ($LASTEXITCODE -ne 0) { throw "Command failed: $cmd" }
+-}
++function Exec($cmd) {
++  Write-Host "» $cmd" -ForegroundColor Cyan
++  # Cast pipeline objects to string BEFORE trimming to avoid .TrimEnd() on ErrorRecord, etc.
++  $out = & $env:ComSpec /c $cmd 2>&1 | ForEach-Object { "$_" } | ForEach-Object { $_.TrimEnd() }
++  foreach ($line in $out) {
++    if ($line) { Write-Host $line }
++  }
++  if ($LASTEXITCODE -ne 0) { throw "Command failed: $cmd (exit $LASTEXITCODE)" }
++}
+ 
+ # 1) Apply patch via git if possible, else Python fallback
+ if (Test-Path $PatchPath) {

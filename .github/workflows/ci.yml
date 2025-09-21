@@ -1,0 +1,56 @@
+name: ci
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~\AppData\Local\pip\Cache
+          key: pip-${{ runner.os }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            pip-${{ runner.os }}-
+
+      - name: Install deps
+        shell: pwsh
+        run: |
+          if (Test-Path ".\requirements.txt") {
+            pip install -r .\requirements.txt
+          } else {
+            pip install pytest PyQt6 jsonschema pyyaml
+          }
+
+      - name: Run smokes (offscreen)
+        shell: pwsh
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          if (Test-Path ".\scripts\run_smokes_all.ps1") {
+            pwsh .\scripts\run_smokes_all.ps1
+          } elseif (Test-Path ".\tests\smoke") {
+            pytest -q tests\smoke
+          } else {
+            echo "No smoke tests found."
+          }
+
+      - name: Upload _results (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: _results/**/*
+          if-no-files-found: ignore

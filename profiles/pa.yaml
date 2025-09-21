@@ -1,0 +1,9 @@
+inherits: base_desktop
+profile_id: pa
+ui:
+  brand_id: base
+  window_defaults: { width: 1280, height: 800, maximized: false }
+capabilities:
+  enable: [cap.layouts, cap.command_palette]
+plugins:
+  include: [panel_logs]

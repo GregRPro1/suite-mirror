@@ -1,0 +1,10 @@
+[brand]
+id = "base"
+name = "Base Theme"
+version = "1.0.0"
+
+[palette]
+base = "#1e1e1e"
+surface = "#252526"
+text = "#d4d4d4"
+accent = "#569cd6"

@@ -1,0 +1,58 @@
+{
+  "properties": {
+    "ui": {
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "object",
+          "properties": {
+            "base_color": {
+              "type": "string"
+            },
+            "accent_color": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            }
+          }
+        },
+        "window": {
+          "type": "object",
+          "properties": {
+            "default_size": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "maximized": {
+              "type": "boolean"
+            }
+          }
+        },
+        "layout": {
+          "type": "object",
+          "properties": {
+            "preset": {
+              "type": "string"
+            }
+          }
+        },
+        "statusbar": {
+          "type": "object",
+          "properties": {
+            "pinned_macros": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

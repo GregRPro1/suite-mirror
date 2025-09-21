@@ -1,0 +1,9 @@
+inherits: base_desktop
+profile_id: suspension
+ui:
+  brand_id: base
+  window_defaults: { width: 1440, height: 900, maximized: false }
+capabilities:
+  enable: [cap.jobs, cap.command_palette]
+plugins:
+  include: [panel_jobs, panel_logs]

@@ -1,0 +1,8 @@
+.venv/
+pycache/
+.pyc
+.env
+.tmp/
+_build/
+tmp/
+projects//

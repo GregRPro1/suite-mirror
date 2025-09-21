@@ -1,0 +1,8 @@
+profile_id: base_desktop
+ui:
+  brand_id: base
+  window_defaults: { width: 1280, height: 800, maximized: false }
+capabilities:
+  enable: [cap.layouts, cap.command_palette]
+plugins:
+  include: [panel_jobs, panel_logs]

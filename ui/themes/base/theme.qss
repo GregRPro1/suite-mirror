@@ -1,0 +1,3 @@
+QMainWindow { background: #252526; color: #d4d4d4; }
+QStatusBar { background: #1e1e1e; }
+QToolTip { color: #000; background: #d4d4d4; }
