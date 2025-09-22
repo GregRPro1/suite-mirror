@@ -1,3 +1,5 @@
+from PyQt6 import QtGui
+from base_app.ui.open_settings import show_settings_dialog
 from __future__ import annotations
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QDockWidget, QTextEdit, QTabWidget, QStatusBar, QLabel, QFileDialog, QMessageBox
@@ -15,7 +17,36 @@ from ..services.crash_handler import write_crash_marker
 import pathlib
 class MainWindow(QMainWindow):
     def __init__(self, actions: ActionRegistry, jobs: JobRunner, themes: ThemeManager, plugins: PluginManager, projects: ProjectManager, settings: SettingsManager):
-        super().__init__()
+        
+# --- Settings menu wiring (idempotent) ---
+try:
+    _ = self.actSettings
+except Exception:
+    self.actSettings = QtGui.QAction("Settings…", self)
+    self.actSettings.setShortcut("Ctrl+,")
+    self.actSettings.triggered.connect(lambda: show_settings_dialog(self))
+    try:
+        menu = getattr(self, "menuWindow", None)
+        if menu is None and hasattr(self, "menuBar"):
+            mb = self.menuBar() if callable(getattr(self, "menuBar", None)) else None
+            if mb is not None:
+                menu = getattr(self, "menu_tools", None) or getattr(self, "menuWindow", None)
+                if menu is None:
+                    menu = mb.addMenu("&Window")
+        if menu is not None:
+            try: menu.addAction(self.actSettings)
+            except Exception: pass
+    except Exception:
+        pass
+    try:
+        reg = getattr(self, "actions", None)
+        if reg is not None and hasattr(reg, "register_simple"):
+            reg.register_simple("settings.open", "Settings…", lambda: show_settings_dialog(self),
+                                 category="General", shortcut="Ctrl+,")
+    except Exception:
+        pass
+
+super().__init__()
         self.actions=actions; self.jobs=jobs; self.themes=themes; self.plugins=plugins; self.projects=projects; self.settings=settings
 
         self.setWindowTitle("Suite Base App (Skeleton)")
@@ -36,7 +67,59 @@ class MainWindow(QMainWindow):
         self.plugins.load_builtin_panels(self)
 
     def _setup_menus(self):
-        mb = self.menuBar()
+        
+
+# --- Ensure Settings… appears in menus (idempotent) ---
+try:
+    st = QtGui.QAction("Settings…", self)
+    st.setShortcut("Ctrl+,")
+    st.triggered.connect(lambda: show_settings_dialog(self))
+    added = False
+    for mname in ("menu_tools","menu_view","menu_file","menu_help"):
+        menu = getattr(self, mname, None)
+        if menu is not None:
+            try:
+                texts = [a.text() for a in menu.actions()]
+                if "Settings…" not in texts:
+                    menu.addAction(st)
+                    added = True
+                    break
+            except Exception:
+                pass
+    if not added and hasattr(self, "menuBar"):
+        mb = self.menuBar() if callable(getattr(self, "menuBar", None)) else None
+        if mb is not None:
+            mw = mb.addMenu("&Window")
+            mw.addAction(st)
+except Exception:
+    pass
+
+# --- Ensure Settings… appears in menus (idempotent) ---
+try:
+    st = QtGui.QAction("Settings…", self)
+    st.setShortcut("Ctrl+,")
+    st.triggered.connect(lambda: show_settings_dialog(self))
+    added = False
+    for mname in ("menu_tools","menu_view","menu_file","menu_help"):
+        menu = getattr(self, mname, None)
+        if menu is not None:
+            try:
+                texts = [a.text() for a in menu.actions()]
+                if "Settings…" not in texts:
+                    menu.addAction(st)
+                    added = True
+                    break
+            except Exception:
+                pass
+    if not added and hasattr(self, "menuBar"):
+        mb = self.menuBar() if callable(getattr(self, "menuBar", None)) else None
+        if mb is not None:
+            mw = mb.addMenu("&Window")
+            mw.addAction(st)
+except Exception:
+    pass
+
+mb = self.menuBar()
         self.menu_file = mb.addMenu("&File")
         self.menu_view = mb.addMenu("&View")
         self.menu_tools = mb.addMenu("&Tools")
